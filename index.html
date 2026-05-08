@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>VPS Grand & Mahal — Wedding Rooms</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --arjun: #1a4fa0;
+    --arjun-light: #ddeaff;
+    --arjun-mid: #6b9ee8;
+    --sanjana: #a0194d;
+    --sanjana-light: #ffdded;
+    --sanjana-mid: #e06b9e;
+    --special: #7a5200;
+    --special-light: #fff0cc;
+    --vacant: #999;
+    --vacant-light: #f0f0f0;
+    --bg: #faf7f4;
+    --surface: #fff;
+    --text: #1a1410;
+    --muted: #888;
+    --border: #e8e0d8;
+    --gold: #c9933a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(160deg, #1a1410 0%, #3d2418 60%, #1a1410 100%);
+    color: white;
+    padding: 48px 20px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 80%, rgba(201,147,58,0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(201,147,58,0.1) 0%, transparent 50%);
+  }
+  .header-inner { position: relative; }
+  .header-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 8vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: white;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .header-location {
+    margin-top: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .header-date {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: white;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat {
+    padding: 16px 8px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 5vw, 30px);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+  }
+  .c-total { color: var(--text); }
+  .c-arjun { color: var(--arjun); }
+  .c-sanjana { color: var(--sanjana); }
+  .c-green { color: #2a6e4e; }
+
+  /* ── MAIN ── */
+  .main { padding: 20px 16px 48px; max-width: 700px; margin: 0 auto; }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    align-items: center;
+  }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .leg-arjun { background: var(--arjun); }
+  .leg-sanjana { background: var(--sanjana); }
+  .leg-special { background: var(--gold); }
+  .leg-vacant { background: var(--vacant); }
+  .leg-ac { margin-left: auto; font-size: 10px; color: var(--muted); }
+
+  /* ── FILTER BAR ── */
+  .filter-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+    padding-bottom: 2px;
+  }
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    width: max-content;
+    padding: 2px 0;
+  }
+  .filter-btn {
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    transition: all 0.18s;
+    color: var(--text);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .filter-btn:active { transform: scale(0.96); }
+  .f-all    { }
+  .f-arjun  { }
+  .f-sanjana{ }
+  .f-ac     { }
+  .f-triple { }
+  .active-all     { background: var(--text);    color: white; border-color: var(--text); }
+  .active-arjun   { background: var(--arjun);   color: white; border-color: var(--arjun); }
+  .active-sanjana { background: var(--sanjana); color: white; border-color: var(--sanjana); }
+  .active-ac      { background: #2a6e4e;         color: white; border-color: #2a6e4e; }
+  .active-triple  { background: #5a2e7a;         color: white; border-color: #5a2e7a; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 24px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .section-count {
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--border);
+    padding: 2px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  /* ── ROOM GRID ── */
+  .room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
+    gap: 8px;
+  }
+
+  .room-card {
+    border-radius: 10px;
+    padding: 10px 10px 8px;
+    border: 1.5px solid transparent;
+    position: relative;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: default;
+    user-select: none;
+  }
+  .room-card:active { transform: scale(0.96); }
+  .room-card.dimmed { opacity: 0.18; }
+
+  .card-arjun  { background: var(--arjun-light);  border-color: var(--arjun-mid); }
+  .card-sanjana{ background: var(--sanjana-light); border-color: var(--sanjana-mid); }
+  .card-special{ background: var(--special-light); border-color: var(--gold); }
+  .card-vacant { background: var(--vacant-light);  border-color: #ccc; }
+
+  .room-ac {
+    position: absolute;
+    top: 6px; right: 7px;
+    font-size: 8px;
+    color: rgba(0,0,0,0.3);
+  }
+  .room-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .card-arjun  .room-num { color: var(--arjun); }
+  .card-sanjana .room-num { color: var(--sanjana); }
+  .card-special .room-num { color: var(--special); }
+  .card-vacant  .room-num { color: var(--vacant); }
+
+  .room-type { font-size: 9px; color: #777; margin-top: 3px; }
+  .room-who  { font-size: 9px; font-weight: 600; margin-top: 3px; }
+  .card-arjun  .room-who { color: var(--arjun); }
+  .card-sanjana .room-who { color: var(--sanjana); }
+  .card-special .room-who { color: var(--special); }
+  .card-vacant  .room-who { color: var(--vacant); }
+
+  .room-tariff {
+    font-size: 8px;
+    color: #999;
+    margin-top: 4px;
+    background: rgba(0,0,0,0.05);
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* ── BOTTOM SHEET (mobile detail) ── */
+  .sheet-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    backdrop-filter: blur(2px);
+  }
+  .sheet-overlay.open { display: flex; align-items: flex-end; }
+  .sheet {
+    background: white;
+    border-radius: 20px 20px 0 0;
+    padding: 24px 24px 40px;
+    width: 100%;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .sheet-overlay.open .sheet { transform: translateY(0); }
+  .sheet-handle {
+    width: 36px; height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+  .sheet-room-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .sheet-title { font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .sheet-divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .sheet-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 14px;
+  }
+  .sheet-row-label { color: var(--muted); font-size: 12px; }
+  .sheet-row-val { font-weight: 600; }
+  .sheet-close {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px;
+    background: var(--text);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+  }
+
+  /* ── COST TABLE ── */
+  .cost-section {
+    margin-top: 28px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .cost-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cost-header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .cost-total-pill {
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 100px;
+    color: var(--muted);
+  }
+  .cost-scroll { overflow-x: auto; }
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 380px;
+  }
+  .cost-table th {
+    padding: 10px 14px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: #faf9f8;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .cost-table td {
+    padding: 10px 14px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cost-table tr:last-child td { border-bottom: none; font-weight: 700; background: #faf7f4; }
+  .c-a { color: var(--arjun); font-weight: 600; font-size: 11px; }
+  .c-s { color: var(--sanjana); font-weight: 600; font-size: 11px; }
+  .c-b { font-size: 11px; color: #666; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 16px;
+  }
+  .footer strong { color: var(--text); }
+
+  /* ── DESKTOP tweaks ── */
+  @media (min-width: 600px) {
+    .main { padding: 28px 24px 64px; }
+    .room-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+    .room-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .room-card { cursor: pointer; }
+    .header { padding: 64px 32px 48px; }
+    .stats-strip { max-width: 700px; margin: 0 auto; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Wedding Room Allocation</div>
+    <h1>VPS Grand<br>& <em>Mahal</em></h1>
+    <div class="header-location">📍 Palani, Tamil Nadu</div>
+    <div class="header-date">🗓 October 30 – November 1, 2026</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat"><div class="stat-num c-total">62</div><div class="stat-label">Total Rooms</div></div>
+  <div class="stat"><div class="stat-num c-arjun">31</div><div class="stat-label">Arjun's Side</div></div>
+  <div class="stat"><div class="stat-num c-sanjana">31</div><div class="stat-label">Sanjana's Side</div></div>
+  <div class="stat"><div class="stat-num c-green">50</div><div class="stat-label">A/C Rooms</div></div>
+</div>
+
+<div class="main">
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot leg-arjun"></div> Arjun's side</div>
+    <div class="leg-item"><div class="leg-dot leg-sanjana"></div> Sanjana's side</div>
+    <div class="leg-item"><div class="leg-dot leg-special"></div> Crew</div>
+    <div class="leg-item"><div class="leg-dot leg-vacant"></div> Vacant</div>
+    <span class="leg-ac">❄ = A/C</span>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filter-wrap">
+    <div class="filter-bar">
+      <button class="filter-btn active-all" onclick="setFilter('all',this)">All Rooms</button>
+      <button class="filter-btn" onclick="setFilter('arjun',this)">Arjun's Side</button>
+      <button class="filter-btn" onclick="setFilter('sanjana',this)">Sanjana's Side</button>
+      <button class="filter-btn" onclick="setFilter('ac',this)">A/C Only</button>
+      <button class="filter-btn" onclick="setFilter('triple',this)">Triples & Suites</button>
+    </div>
+  </div>
+
+  <!-- ROOM SECTIONS -->
+  <div id="sections"></div>
+
+  <!-- COST BREAKDOWN -->
+  <div class="cost-section">
+    <div class="cost-header">
+      <div class="cost-header-title">Cost by Category</div>
+      <div class="cost-total-pill" id="total-pill">₹— /night total</div>
+    </div>
+    <div class="cost-scroll">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Rooms</th>
+            <th>Rate/night</th>
+            <th>Side</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Non A/C Standard</td><td>Double</td><td>5</td><td>₹1,470</td><td><span class="c-b">A + S + Crew</span></td></tr>
+          <tr><td>Non A/C Mahal</td><td>Double</td><td>3</td><td>₹1,680</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td>Non A/C</td><td>Triple</td><td>1</td><td>₹2,205</td><td><span class="c-a">Arjun</span></td></tr>
+          <tr><td>Standard A/C</td><td>Double</td><td>12</td><td>₹2,310</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td>Standard A/C</td><td>Triple</td><td>6</td><td>₹3,045</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td>Deluxe A/C</td><td>Double</td><td>23</td><td>₹2,835</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td>Deluxe A/C</td><td>Triple</td><td>3</td><td>₹3,885</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td>Deluxe A/C</td><td>Suite</td><td>1</td><td>₹3,885</td><td><span class="c-s">Sanjana</span></td></tr>
+          <tr><td>Deluxe A/C</td><td>4-Bed</td><td>1</td><td>₹4,935</td><td><span class="c-a">Arjun</span></td></tr>
+          <tr><td>Grand Deluxe A/C</td><td>Double</td><td>6</td><td>₹3,150</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td>Grand Deluxe A/C</td><td>Triple</td><td>2</td><td>₹4,410</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td>Grand Deluxe A/C</td><td>Suite</td><td>4</td><td>₹3,885</td><td><span class="c-b">A + S</span></td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td><strong>62</strong></td><td id="total-cell"><strong>—</strong></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Arjun & Sanjana</strong> · October 30 – November 1, 2026<br>
+  VPS Grand & Mahal, Palani, Tamil Nadu
+</div>
+
+<!-- BOTTOM SHEET -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet(event)">
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-room-num" id="s-num">—</div>
+    <div class="sheet-title" id="s-title">—</div>
+    <div class="sheet-divider"></div>
+    <div class="sheet-row">
+      <span class="sheet-row-label">Category</span>
+      <span class="sheet-row-val" id="s-cat">—</span>
+    </div>
+    <div class="sheet-row">
+      <span class="sheet-row-label">Cooling</span>
+      <span class="sheet-row-val" id="s-ac">—</span>
+    </div>
+    <div class="sheet-row">
+      <span class="sheet-row-label">Rate / night</span>
+      <span class="sheet-row-val" id="s-tariff">—</span>
+    </div>
+    <div class="sheet-row">
+      <span class="sheet-row-label">Allocated to</span>
+      <span class="sheet-row-val" id="s-who">—</span>
+    </div>
+    <button class="sheet-close" onclick="closeSheet()">Close</button>
+  </div>
+</div>
+
+<script>
+const rooms = [
+  { num:"108", type:"Double", ac:false, cat:"Non-A/C Standard", occupant:"arjun",   tariff:1470 },
+  { num:"109", type:"Double", ac:false, cat:"Non-A/C Standard", occupant:"arjun",   tariff:1470 },
+  { num:"110", type:"Double", ac:false, cat:"Non-A/C Standard", occupant:"vacant",  tariff:1470 },
+  { num:"111", type:"Double", ac:false, cat:"Non-A/C Standard", occupant:"sanjana", tariff:1470 },
+  { num:"113", type:"Double", ac:false, cat:"Non-A/C Standard", occupant:"sanjana", tariff:1470 },
+  { num:"211", type:"Double", ac:false, cat:"Non-A/C Standard", occupant:"special", tariff:1470, note:"Camera Man" },
+  { num:"213", type:"Double", ac:false, cat:"Non-A/C Standard", occupant:"special", tariff:1470, note:"Beautician" },
+  { num:"203", type:"Double (W)", ac:false, cat:"Non-A/C Mahal", occupant:"arjun",   tariff:1680 },
+  { num:"209", type:"Double (W)", ac:false, cat:"Non-A/C Mahal", occupant:"sanjana", tariff:1680 },
+  { num:"210", type:"Double (W)", ac:false, cat:"Non-A/C Mahal", occupant:"sanjana", tariff:1680 },
+  { num:"TBD", type:"Triple",    ac:false, cat:"Non-A/C Triple", occupant:"arjun",   tariff:2205 },
+  { num:"101", type:"Double", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:2310 },
+  { num:"102", type:"Double", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:2310 },
+  { num:"103", type:"Double", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:2310 },
+  { num:"104", type:"Double", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:2310 },
+  { num:"105", type:"Double", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:2310 },
+  { num:"112", type:"Double", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:2310 },
+  { num:"201", type:"Double", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:2310 },
+  { num:"202", type:"Double", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:2310 },
+  { num:"204", type:"Double", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:2310 },
+  { num:"205", type:"Double", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:2310 },
+  { num:"208", type:"Double", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:2310 },
+  { num:"212", type:"Double", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:2310 },
+  { num:"106", type:"Triple", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:3045 },
+  { num:"114", type:"Triple", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:3045 },
+  { num:"115", type:"Triple", ac:true, cat:"Standard A/C", occupant:"arjun",   tariff:3045 },
+  { num:"207", type:"Triple", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:3045 },
+  { num:"214", type:"Triple", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:3045 },
+  { num:"216", type:"Triple", ac:true, cat:"Standard A/C", occupant:"sanjana", tariff:3045 },
+  { num:"301", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"302", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"303", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"304", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"306", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"308", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"309", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"310", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"311", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"312", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"313", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:2835 },
+  { num:"317", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"318", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"319", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"320", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"321", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"322", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"324", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"325", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"326", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"327", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"328", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"329", type:"Double", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:2835 },
+  { num:"307", type:"Triple", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:3885 },
+  { num:"330", type:"Triple", ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:3885 },
+  { num:"331", type:"Triple", ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:3885 },
+  { num:"316", type:"4-Bed",  ac:true, cat:"Deluxe A/C", occupant:"arjun",   tariff:4935 },
+  { num:"315", type:"Suite",  ac:true, cat:"Deluxe A/C", occupant:"sanjana", tariff:3885 },
+  { num:"217", type:"Double", ac:true, cat:"Grand Deluxe A/C", occupant:"arjun",   tariff:3150 },
+  { num:"218", type:"Double", ac:true, cat:"Grand Deluxe A/C", occupant:"arjun",   tariff:3150 },
+  { num:"219", type:"Double", ac:true, cat:"Grand Deluxe A/C", occupant:"arjun",   tariff:3150 },
+  { num:"227", type:"Double", ac:true, cat:"Grand Deluxe A/C", occupant:"sanjana", tariff:3150 },
+  { num:"228", type:"Double", ac:true, cat:"Grand Deluxe A/C", occupant:"sanjana", tariff:3150 },
+  { num:"229", type:"Double", ac:true, cat:"Grand Deluxe A/C", occupant:"sanjana", tariff:3150 },
+  { num:"222", type:"Triple", ac:true, cat:"Grand Deluxe A/C", occupant:"arjun",   tariff:4410 },
+  { num:"223", type:"Triple", ac:true, cat:"Grand Deluxe A/C", occupant:"sanjana", tariff:4410 },
+  { num:"220", type:"Suite",  ac:true, cat:"Grand Deluxe A/C", occupant:"arjun",   tariff:3885 },
+  { num:"221", type:"Suite",  ac:true, cat:"Grand Deluxe A/C", occupant:"arjun",   tariff:3885 },
+  { num:"225", type:"Suite",  ac:true, cat:"Grand Deluxe A/C", occupant:"sanjana", tariff:3885 },
+  { num:"226", type:"Suite",  ac:true, cat:"Grand Deluxe A/C", occupant:"sanjana", tariff:3885 },
+];
+
+const catOrder = ["Non-A/C Standard","Non-A/C Mahal","Non-A/C Triple","Standard A/C","Deluxe A/C","Grand Deluxe A/C"];
+let activeFilter = 'all';
+
+function whoLabel(r) {
+  if (r.note) return r.note;
+  if (r.occupant === 'arjun') return 'Arjun';
+  if (r.occupant === 'sanjana') return 'Sanjana';
+  if (r.occupant === 'vacant') return 'Vacant';
+  return 'Crew';
+}
+
+function matches(r) {
+  if (activeFilter === 'all') return true;
+  if (activeFilter === 'arjun') return r.occupant === 'arjun';
+  if (activeFilter === 'sanjana') return r.occupant === 'sanjana';
+  if (activeFilter === 'ac') return r.ac;
+  if (activeFilter === 'triple') return ['Triple','Suite','4-Bed'].includes(r.type);
+  return true;
+}
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.className = 'filter-btn');
+  btn.className = 'filter-btn active-' + f;
+  render();
+}
+
+function openSheet(room) {
+  document.getElementById('s-num').textContent = 'Room ' + room.num;
+  document.getElementById('s-title').textContent = room.type + ' · ' + room.cat;
+  document.getElementById('s-cat').textContent = room.cat;
+  document.getElementById('s-ac').textContent = room.ac ? 'Air Conditioned ❄' : 'Non A/C';
+  document.getElementById('s-tariff').textContent = '₹' + room.tariff.toLocaleString() + ' per night';
+  const whoEl = document.getElementById('s-who');
+  whoEl.textContent = whoLabel(room);
+  whoEl.style.color = room.occupant === 'arjun' ? 'var(--arjun)' : room.occupant === 'sanjana' ? 'var(--sanjana)' : '#666';
+  const overlay = document.getElementById('sheetOverlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => overlay.classList.add('open'));
+}
+
+function closeSheet(e) {
+  if (e && e.target !== document.getElementById('sheetOverlay')) return;
+  const overlay = document.getElementById('sheetOverlay');
+  overlay.classList.remove('open');
+  setTimeout(() => overlay.style.display = 'none', 300);
+}
+
+function render() {
+  const container = document.getElementById('sections');
+  container.innerHTML = '';
+  const grouped = {};
+  catOrder.forEach(c => grouped[c] = []);
+  rooms.forEach(r => { if (grouped[r.cat]) grouped[r.cat].push(r); });
+
+  catOrder.forEach(cat => {
+    const group = grouped[cat];
+    if (!group.length) return;
+    const visible = group.filter(matches);
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    sec.innerHTML = `
+      <div class="section-header">
+        <span class="section-label">${cat}</span>
+        <div class="section-line"></div>
+        <span class="section-count">${visible.length}/${group.length}</span>
+      </div>
+      <div class="room-grid"></div>
+    `;
+    container.appendChild(sec);
+    const grid = sec.querySelector('.room-grid');
+    group.forEach(room => {
+      const isMatch = matches(room);
+      const card = document.createElement('div');
+      card.className = `room-card card-${room.occupant} ${isMatch ? '' : 'dimmed'}`;
+      card.innerHTML = `
+        ${room.ac ? '<span class="room-ac">❄</span>' : ''}
+        <div class="room-num">${room.num}</div>
+        <div class="room-type">${room.type}</div>
+        <div class="room-who">${whoLabel(room)}</div>
+        <div class="room-tariff">₹${room.tariff.toLocaleString()}</div>
+      `;
+      if (isMatch) card.onclick = () => openSheet(room);
+      grid.appendChild(card);
+    });
+  });
+
+  // total
+  const total = rooms.reduce((s,r) => s + r.tariff, 0);
+  document.getElementById('total-pill').textContent = '₹' + total.toLocaleString() + ' /night total';
+  document.getElementById('total-cell').innerHTML = '<strong>₹' + total.toLocaleString() + '</strong>';
+}
+
+render();
+</script>
+</body>
+</html>

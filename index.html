@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>VPS Grand & Mahal — Wedding Rooms</title>
+<title>Wedding Room Allocation — Palani</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -17,46 +17,109 @@
   html { scroll-behavior: smooth; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-  /* HEADER */
-  .header { background: linear-gradient(160deg, #1a1410 0%, #3d2418 60%, #1a1410 100%); color: white; padding: 48px 20px 36px; text-align: center; position: relative; overflow: hidden; }
+  /* ── HEADER ── */
+  .header { background: linear-gradient(160deg, #1a1410 0%, #3d2418 60%, #1a1410 100%); color: white; padding: 40px 20px 32px; text-align: center; position: relative; overflow: hidden; }
   .header::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 80%, rgba(201,147,58,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(201,147,58,0.1) 0%, transparent 50%); }
   .header-inner { position: relative; }
-  .header-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 600; }
-  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 8vw, 48px); font-weight: 900; line-height: 1.1; }
-  .header h1 em { font-style: italic; color: var(--gold); }
-  .header-location { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,0.55); }
-  .header-date { margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 6px 16px; font-size: 12px; color: rgba(255,255,255,0.8); }
-  .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 5px 12px; font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 10px; }
+  .header-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-weight: 600; }
+  .header-title { font-family: 'Playfair Display', serif; font-size: clamp(22px, 6vw, 38px); font-weight: 900; line-height: 1.15; transition: all 0.3s; }
+  .header-title em { font-style: italic; color: var(--gold); }
+  .header-location { margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.5); }
+  .header-date { margin-top: 10px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 5px 14px; font-size: 12px; color: rgba(255,255,255,0.75); }
+  .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 4px 12px; font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 8px; }
   .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+  .live-dot.soon { background: #f59e0b; animation: none; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  /* STATS */
+  /* ── HOTEL SWITCHER ── */
+  .hotel-switcher {
+    display: flex;
+    gap: 0;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 4px;
+    margin: 20px auto 0;
+    width: fit-content;
+    max-width: calc(100% - 32px);
+  }
+  .hotel-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.22s;
+    white-space: nowrap;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .hotel-btn .btn-sub { font-size: 9px; font-weight: 400; display: block; margin-top: 1px; opacity: 0.7; }
+  .hotel-btn.active {
+    background: white;
+    color: var(--text);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .hotel-btn.active .btn-sub { color: var(--muted); opacity: 1; }
+  .hotel-btn:active { transform: scale(0.97); }
+
+  /* ── STATS ── */
   .stats-strip { display: grid; grid-template-columns: repeat(4,1fr); background: white; border-bottom: 1px solid var(--border); }
-  .stat { padding: 16px 8px; text-align: center; border-right: 1px solid var(--border); }
+  .stat { padding: 14px 8px; text-align: center; border-right: 1px solid var(--border); }
   .stat:last-child { border-right: none; }
-  .stat-num { font-family: 'Playfair Display', serif; font-size: clamp(20px,5vw,30px); font-weight: 700; line-height: 1; }
-  .stat-label { font-size: 9px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1.3; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: clamp(18px,5vw,28px); font-weight: 700; line-height: 1; transition: all 0.3s; }
+  .stat-label { font-size: 9px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1.3; }
   .c-total{color:var(--text)} .c-arjun{color:var(--arjun)} .c-sanjana{color:var(--sanjana)} .c-green{color:#2a6e4e}
 
-  /* LOADING / ERROR */
+  /* ── LOADING / ERROR / COMING SOON ── */
   .loading-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 20px; gap:16px; color:var(--muted); }
   .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
   @keyframes spin { to{transform:rotate(360deg)} }
   .loading-text { font-size:13px; }
   .error-state { display:none; margin:24px 16px; background:#fff0f0; border:1px solid #fca5a5; border-radius:12px; padding:16px 20px; font-size:13px; color:#991b1b; line-height:1.6; }
 
-  /* MAIN */
+  .coming-soon {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 32px;
+    text-align: center;
+    gap: 12px;
+  }
+  .coming-soon-icon { font-size: 48px; margin-bottom: 8px; }
+  .coming-soon h3 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+  .coming-soon p { font-size: 13px; color: var(--muted); max-width: 260px; line-height: 1.6; }
+  .coming-soon-badge {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #92400e;
+  }
+
+  /* ── MAIN ── */
   .main { padding:20px 16px 48px; max-width:700px; margin:0 auto; }
   .last-updated { text-align:right; font-size:10px; color:var(--muted); margin-bottom:14px; display:none; }
 
-  /* LEGEND */
+  /* ── LEGEND ── */
   .legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; padding:12px 14px; background:white; border-radius:12px; border:1px solid var(--border); align-items:center; }
   .leg-item { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:500; }
   .leg-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
   .leg-arjun{background:var(--arjun)} .leg-sanjana{background:var(--sanjana)} .leg-special{background:var(--gold)} .leg-vacant{background:var(--vacant)}
   .leg-ac { margin-left:auto; font-size:10px; color:var(--muted); }
 
-  /* FILTERS */
+  /* ── FILTERS ── */
   .filter-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:20px; padding-bottom:2px; }
   .filter-bar { display:flex; gap:8px; width:max-content; padding:2px 0; }
   .filter-btn { padding:8px 16px; border-radius:100px; border:1.5px solid var(--border); background:white; font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; white-space:nowrap; transition:all 0.18s; color:var(--text); }
@@ -67,14 +130,14 @@
   .active-ac{background:#2a6e4e;color:white;border-color:#2a6e4e}
   .active-triple{background:#5a2e7a;color:white;border-color:#5a2e7a}
 
-  /* SECTIONS */
+  /* ── SECTIONS ── */
   .section { margin-bottom:24px; }
   .section-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
   .section-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); white-space:nowrap; }
   .section-line { flex:1; height:1px; background:var(--border); }
   .section-count { font-size:10px; color:var(--muted); background:var(--border); padding:2px 8px; border-radius:100px; white-space:nowrap; }
 
-  /* ROOM CARDS */
+  /* ── ROOM CARDS ── */
   .room-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(82px,1fr)); gap:8px; }
   .room-card { border-radius:10px; padding:10px 10px 8px; border:1.5px solid transparent; position:relative; transition:transform 0.15s,box-shadow 0.15s; cursor:pointer; user-select:none; }
   .room-card:active { transform:scale(0.96); }
@@ -93,7 +156,7 @@
   .card-special .room-who{color:var(--special)} .card-vacant .room-who{color:var(--vacant)}
   .room-tariff { font-size:8px; color:#999; margin-top:4px; background:rgba(0,0,0,0.05); display:inline-block; padding:1px 5px; border-radius:4px; }
 
-  /* BOTTOM SHEET */
+  /* ── BOTTOM SHEET ── */
   .sheet-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; backdrop-filter:blur(2px); align-items:flex-end; }
   .sheet-overlay.open { display:flex; }
   .sheet { background:white; border-radius:20px 20px 0 0; padding:24px 24px 40px; width:100%; transform:translateY(100%); transition:transform 0.3s cubic-bezier(0.32,0.72,0,1); }
@@ -107,7 +170,7 @@
   .sheet-row-val { font-weight:600; }
   .sheet-close { margin-top:20px; width:100%; padding:14px; background:var(--text); color:white; border:none; border-radius:12px; font-size:14px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; }
 
-  /* COST TABLE */
+  /* ── COST TABLE ── */
   .cost-section { margin-top:28px; background:white; border-radius:16px; border:1px solid var(--border); overflow:hidden; }
   .cost-header { padding:16px 20px; border-bottom:1px solid var(--border); font-family:'Playfair Display',serif; font-size:17px; font-weight:700; }
   .cost-scroll { overflow-x:auto; }
@@ -116,7 +179,7 @@
   .cost-table td { padding:10px 14px; font-size:12px; border-bottom:1px solid var(--border); }
   .cost-table tr:last-child td { border-bottom:none; font-weight:700; background:#faf7f4; }
 
-  /* FOOTER */
+  /* ── FOOTER ── */
   .footer { text-align:center; padding:24px 16px; font-size:11px; color:var(--muted); border-top:1px solid var(--border); margin-top:16px; line-height:1.8; }
   .footer strong { color:var(--text); }
 
@@ -124,39 +187,57 @@
     .main { padding:28px 24px 64px; }
     .room-grid { grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:10px; }
     .room-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.1); }
-    .header { padding:64px 32px 48px; }
+    .header { padding:56px 32px 40px; }
+    .hotel-btn { padding:10px 24px; font-size:13px; }
   }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-inner">
-    <div class="header-eyebrow">Wedding Room Allocation</div>
-    <h1>VPS Grand<br>& <em>Mahal</em></h1>
-    <div class="header-location">📍 Palani, Tamil Nadu</div>
+    <div class="header-eyebrow">Wedding Room Allocation · Palani</div>
+    <div class="header-title" id="headerTitle">VPS Grand<br>& <em>Mahal</em></div>
+    <div class="header-location" id="headerLocation">📍 Palani, Tamil Nadu</div>
     <div class="header-date">🗓 October 30 – November 1, 2026</div>
     <br>
-    <div class="live-badge"><div class="live-dot"></div>Live · synced from Google Sheets</div>
+    <div class="live-badge">
+      <div class="live-dot" id="liveDot"></div>
+      <span id="liveBadgeText">Live · synced from Google Sheets</span>
+    </div>
+
+    <!-- HOTEL SWITCHER -->
+    <div class="hotel-switcher">
+      <button class="hotel-btn active" id="btn-vps" onclick="switchHotel('vps')">
+        VPS Grand & Mahal
+        <span class="btn-sub">62 rooms · Live</span>
+      </button>
+      <button class="hotel-btn" id="btn-tirupur" onclick="switchHotel('tirupur')">
+        New Tirupur Lodge
+        <span class="btn-sub">Coming soon</span>
+      </button>
+    </div>
   </div>
 </div>
 
+<!-- STATS -->
 <div class="stats-strip">
-  <div class="stat"><div class="stat-num c-total" id="stat-total">—</div><div class="stat-label">Total Rooms</div></div>
+  <div class="stat"><div class="stat-num c-total"   id="stat-total">—</div><div class="stat-label">Total Rooms</div></div>
   <div class="stat"><div class="stat-num c-arjun"   id="stat-arjun">—</div><div class="stat-label">Arjun's Side</div></div>
   <div class="stat"><div class="stat-num c-sanjana" id="stat-sanjana">—</div><div class="stat-label">Sanjana's Side</div></div>
   <div class="stat"><div class="stat-num c-green"   id="stat-ac">—</div><div class="stat-label">A/C Rooms</div></div>
 </div>
 
 <div class="error-state" id="errorState">
-  ⚠️ Couldn't load room data from Google Sheets.<br>
-  <small id="errorDetail"></small>
+  ⚠️ Couldn't load room data.<br><small id="errorDetail"></small>
 </div>
 
+<!-- MAIN -->
 <div class="main">
   <div class="last-updated" id="lastUpdated"></div>
 
-  <div class="legend">
+  <div class="legend" id="legend">
     <div class="leg-item"><div class="leg-dot leg-arjun"></div> Arjun's side</div>
     <div class="leg-item"><div class="leg-dot leg-sanjana"></div> Sanjana's side</div>
     <div class="leg-item"><div class="leg-dot leg-special"></div> Crew</div>
@@ -164,7 +245,7 @@
     <span class="leg-ac">❄ = A/C</span>
   </div>
 
-  <div class="filter-wrap">
+  <div class="filter-wrap" id="filterWrap">
     <div class="filter-bar">
       <button class="filter-btn active-all"  onclick="setFilter('all',this)">All Rooms</button>
       <button class="filter-btn" onclick="setFilter('arjun',this)">Arjun's Side</button>
@@ -179,10 +260,18 @@
     <div class="loading-text">Loading rooms from Google Sheets…</div>
   </div>
 
+  <!-- COMING SOON STATE -->
+  <div class="coming-soon" id="comingSoon">
+    <div class="coming-soon-icon">🏨</div>
+    <h3>New Tirupur Lodge</h3>
+    <p>Room allocation is being finalised. Check back soon.</p>
+    <div class="coming-soon-badge">⏳ Allocation in progress</div>
+  </div>
+
   <div id="sections" style="display:none"></div>
 
   <div class="cost-section" id="costSection" style="display:none">
-    <div class="cost-header">Summary by Category</div>
+    <div class="cost-header" id="costHeader">Summary by Category</div>
     <div class="cost-scroll">
       <table class="cost-table">
         <thead><tr>
@@ -198,15 +287,16 @@
 
 <div class="footer">
   <strong>Arjun & Sanjana</strong> · October 30 – November 1, 2026<br>
-  VPS Grand & Mahal, Palani, Tamil Nadu<br>
+  Palani, Tamil Nadu<br>
   <span style="font-size:10px">Data synced live from Google Sheets</span>
 </div>
 
+<!-- BOTTOM SHEET -->
 <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet(event)">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-room-num" id="s-num">—</div>
-    <div class="sheet-title"   id="s-title">—</div>
+    <div class="sheet-title"    id="s-title">—</div>
     <div class="sheet-divider"></div>
     <div class="sheet-row"><span class="sheet-row-label">Category</span><span class="sheet-row-val" id="s-cat">—</span></div>
     <div class="sheet-row"><span class="sheet-row-label">Cooling</span><span class="sheet-row-val" id="s-ac">—</span></div>
@@ -217,25 +307,35 @@
 </div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRvUxUvhS-PvajG585-uUJpwgItZx1g0UkKiZiugVP-2QFxsCRoeRmo5H0S_soRcX8OAakyteuSpaT-/pub?gid=625201619&single=true&output=csv';
+// ── HOTEL CONFIG ─────────────────────────────────────────
+// When Tirupur sheet is ready, paste its CSV URL as the value below
+const HOTELS = {
+  vps: {
+    name:     'VPS Grand & Mahal',
+    nameHTML: 'VPS Grand<br>& <em>Mahal</em>',
+    location: '📍 Palani, Tamil Nadu',
+    csvUrl:   'https://docs.google.com/spreadsheets/d/e/2PACX-1vRvUxUvhS-PvajG585-uUJpwgItZx1g0UkKiZiugVP-2QFxsCRoeRmo5H0S_soRcX8OAakyteuSpaT-/pub?gid=625201619&single=true&output=csv',
+    live:     true,
+  },
+  tirupur: {
+    name:     'New Tirupur Lodge',
+    nameHTML: 'New Tirupur<br><em>Lodge</em>',
+    location: '📍 Palani, Tamil Nadu',
+    csvUrl:   null,   // ← paste CSV URL here when sheet is ready
+    live:     false,
+  },
+};
 
-// ── CATEGORY ORDER ───────────────────────────────────────
-const CAT_ORDER = [
-  'Non-A/C Standard',
-  'Non-A/C Mahal',
-  'Non-A/C Triple',
-  'Standard A/C',
-  'Deluxe A/C',
-  'Grand Deluxe A/C'
-];
+// ── CONSTANTS ────────────────────────────────────────────
+const CAT_ORDER = ['Non-A/C Standard','Non-A/C Mahal','Non-A/C Triple','Standard A/C','Deluxe A/C','Grand Deluxe A/C'];
 
 // ── STATE ────────────────────────────────────────────────
-let allRooms = [];
+let allRooms     = [];
 let activeFilter = 'all';
+let activeHotel  = 'vps';
+let refreshTimer = null;
 
 // ── CSV PARSER ───────────────────────────────────────────
-// Handles: title rows at top, section-header rows mid-sheet, empty rows
 function splitLine(line) {
   const cols = []; let cur = '', inQ = false;
   for (const ch of line) {
@@ -244,139 +344,172 @@ function splitLine(line) {
     else cur += ch;
   }
   cols.push(cur.trim());
-  return cols.map(c => c.replace(/^"|"$/g, '').trim());
+  return cols.map(c => c.replace(/^"|"$/g,'').trim());
 }
 
 function parseCSV(text) {
   const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-
-  // Step 1: find header row (contains "Room No" or "Room Category")
   let headerIdx = -1;
   for (let i = 0; i < lines.length; i++) {
     const low = lines[i].toLowerCase();
-    if (low.includes('room no') && low.includes('room category')) {
-      headerIdx = i;
-      break;
-    }
+    if (low.includes('room category') && low.includes('room no')) { headerIdx = i; break; }
   }
-  // fallback: find row with "room category" alone
   if (headerIdx === -1) {
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].toLowerCase().includes('room category')) { headerIdx = i; break; }
     }
   }
-  if (headerIdx === -1) {
-    console.error('Could not find header row in CSV');
-    return [];
-  }
+  if (headerIdx === -1) { console.error('Header row not found'); return []; }
 
   const headers = splitLine(lines[headerIdx]);
-  console.log('Headers found:', headers);
-
-  // Map header names to indices flexibly
   const idx = {
-    cat:  headers.findIndex(h => h.toLowerCase().includes('room category')),
-    num:  headers.findIndex(h => h.toLowerCase().includes('room no')),
-    tar:  headers.findIndex(h => h.toLowerCase().includes('tariff')),
-    who:  headers.findIndex(h => h.toLowerCase().includes('allot')),
+    cat: headers.findIndex(h => h.toLowerCase().includes('room category')),
+    num: headers.findIndex(h => h.toLowerCase().includes('room no')),
+    tar: headers.findIndex(h => h.toLowerCase().includes('tariff')),
+    who: headers.findIndex(h => h.toLowerCase().includes('allot')),
   };
-  console.log('Column indices:', idx);
 
   const rows = [];
-  let sectionCtx = 'Non-A/C Standard'; // default context
+  let sectionCtx = 'Non-A/C Standard';
 
   for (let i = headerIdx + 1; i < lines.length; i++) {
     const cols = splitLine(lines[i]);
-
-    // Skip fully empty rows
     if (cols.every(c => !c)) continue;
 
-    const roomNum  = idx.num  >= 0 ? (cols[idx.num]  || '') : '';
-    const roomCat  = idx.cat  >= 0 ? (cols[idx.cat]  || '') : '';
-    const tariffRaw= idx.tar  >= 0 ? (cols[idx.tar]  || '') : '';
-    const allotedTo= idx.who  >= 0 ? (cols[idx.who]  || '') : '';
+    const roomNum   = idx.num >= 0 ? (cols[idx.num] || '') : '';
+    const roomCat   = idx.cat >= 0 ? (cols[idx.cat] || '') : '';
+    const tariffRaw = idx.tar >= 0 ? (cols[idx.tar] || '') : '';
+    const allotedTo = idx.who >= 0 ? (cols[idx.who] || '') : '';
 
-    // Section header rows: col0 has text but no room number and no tariff
-    // These look like "NON A/C Double (W) Rs. 1680/- (3 rooms)"
-    const isSection = roomNum === '' && tariffRaw === '' && roomCat !== '';
-    if (isSection) {
+    // Section header row — update context
+    if (roomNum === '' && tariffRaw === '' && roomCat !== '') {
       sectionCtx = roomCat;
-      console.log('Section context:', sectionCtx);
       continue;
     }
 
-    // Skip rows with no room number
     if (!roomNum) continue;
 
-    // Valid room numbers are numeric (101, 108 etc) or known strings (TBD, Not confd)
-    // This filters out stray section titles like "Bride Room A/c W" leaking into data
-    const isNumeric = /^\d+$/.test(roomNum);
+    // Only accept numeric room numbers (or TBD / Not confd)
+    const isNumeric      = /^\d+$/.test(roomNum);
     const isKnownSpecial = /^(tbd|not)/i.test(roomNum);
     if (!isNumeric && !isKnownSpecial) continue;
-
-    const tariff = parseInt(tariffRaw.replace(/[^0-9]/g, '')) || 0;
 
     rows.push({
       num:      roomNum,
       rawCat:   roomCat || sectionCtx,
       section:  sectionCtx,
-      tariff,
+      tariff:   parseInt(tariffRaw.replace(/[^0-9]/g,'')) || 0,
       allotedTo,
     });
   }
-
-  console.log('Parsed rows:', rows.length, rows.slice(0,3));
   return rows;
 }
 
-// ── CLASSIFICATION ────────────────────────────────────────
+// ── CLASSIFIERS ──────────────────────────────────────────
 function classifyOccupant(val) {
   if (!val || !val.trim() || val.toUpperCase() === 'VACANT') return 'vacant';
   const v = val.toUpperCase().trim();
   if (v === 'ARJUN') return 'arjun';
   if (v === 'SANJANA') return 'sanjana';
   if (v.includes('CAMERA') || v.includes('BEAUTICIAN') || v.includes('PHOTO') || v.includes('VIDEO') || v.includes('MAKEUP')) return 'special';
-  // Unknown name — default to arjun side (adjust if needed)
   return 'arjun';
 }
-
 function classifyAC(section, rawCat) {
   const s = (section + ' ' + rawCat).toUpperCase();
   if (s.includes('NON A/C') || s.includes('NON-A/C') || s.includes('NON AC') || s.includes('NON A/c')) return false;
   if (s.includes('A/C') || s.includes('A/c') || s.includes('AIR COND')) return true;
   return false;
 }
-
 function classifyType(rawCat, section) {
   const s = (rawCat + ' ' + section).toUpperCase();
-  if (s.includes('TRIPLE')) return 'Triple';
-  if (s.includes('SUITE'))  return 'Suite';
+  if (s.includes('TRIPLE'))   return 'Triple';
+  if (s.includes('SUITE'))    return 'Suite';
   if (s.includes('4 BED') || s.includes('FOUR BED') || s.includes('4BED')) return '4-Bed';
-  if (s.includes('DOUBLE')) return 'Double';
+  if (s.includes('DOUBLE'))   return 'Double';
   return 'Room';
 }
-
 function classifyCategory(section, tariff) {
   const s = section.toUpperCase();
-  if (s.includes('GRAND DELUXE'))                              return 'Grand Deluxe A/C';
-  if (s.includes('DELUXE') && !s.includes('NON'))             return 'Deluxe A/C';
-  if ((s.includes('A/C') || s.includes('AC')) && !s.includes('NON') && (s.includes('DOUBLE A/C') || s.includes('TRIPLE A/C') || s.includes('STANDARD'))) return 'Standard A/C';
+  if (s.includes('GRAND DELUXE'))                     return 'Grand Deluxe A/C';
+  if (s.includes('DELUXE') && !s.includes('NON'))     return 'Deluxe A/C';
   if ((s.includes('A/C') || s.includes('AC')) && !s.includes('NON')) return 'Standard A/C';
-  if (s.includes('NON') && s.includes('TRIPLE'))              return 'Non-A/C Triple';
+  if (s.includes('NON') && s.includes('TRIPLE'))      return 'Non-A/C Triple';
   if (s.includes('NON') && (s.includes('(W)') || s.includes('MAHAL') || s.includes('1680'))) return 'Non-A/C Mahal';
-  if (s.includes('NON'))                                       return 'Non-A/C Standard';
-  // Tariff-based fallback
-  if (tariff >= 4000)  return 'Grand Deluxe A/C';
-  if (tariff >= 3000)  return 'Deluxe A/C';
-  if (tariff >= 2000)  return 'Standard A/C';
-  if (tariff >= 1680)  return 'Non-A/C Mahal';
+  if (s.includes('NON'))                              return 'Non-A/C Standard';
+  if (tariff >= 4000) return 'Grand Deluxe A/C';
+  if (tariff >= 3000) return 'Deluxe A/C';
+  if (tariff >= 2000) return 'Standard A/C';
+  if (tariff >= 1680) return 'Non-A/C Mahal';
   return 'Non-A/C Standard';
+}
+
+// ── HOTEL SWITCHER ────────────────────────────────────────
+function switchHotel(key) {
+  if (activeHotel === key) return;
+  activeHotel = key;
+  const hotel = HOTELS[key];
+
+  // Update active button
+  document.querySelectorAll('.hotel-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + key).classList.add('active');
+
+  // Update header
+  document.getElementById('headerTitle').innerHTML   = hotel.nameHTML;
+  document.getElementById('headerLocation').textContent = hotel.location;
+
+  // Update live badge
+  const dot  = document.getElementById('liveDot');
+  const text = document.getElementById('liveBadgeText');
+  if (hotel.live) {
+    dot.className  = 'live-dot';
+    text.textContent = 'Live · synced from Google Sheets';
+  } else {
+    dot.className  = 'live-dot soon';
+    text.textContent = 'Allocation in progress';
+  }
+
+  // Reset filter
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.className = 'filter-btn');
+  document.querySelector('.filter-btn').classList.add('active-all');
+
+  // Reset stats
+  ['stat-total','stat-arjun','stat-sanjana','stat-ac'].forEach(id => {
+    document.getElementById(id).textContent = '—';
+  });
+
+  // Clear content
+  document.getElementById('sections').style.display    = 'none';
+  document.getElementById('costSection').style.display = 'none';
+  document.getElementById('errorState').style.display  = 'none';
+  document.getElementById('comingSoon').style.display  = 'none';
+  document.getElementById('lastUpdated').style.display = 'none';
+  document.getElementById('legend').style.display      = 'flex';
+  document.getElementById('filterWrap').style.display  = 'block';
+
+  // Clear auto-refresh
+  if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
+
+  if (hotel.live && hotel.csvUrl) {
+    document.getElementById('loadingState').style.display = 'flex';
+    loadData();
+    refreshTimer = setInterval(loadData, 5 * 60 * 1000);
+  } else {
+    // Coming soon state
+    document.getElementById('loadingState').style.display  = 'none';
+    document.getElementById('comingSoon').style.display    = 'flex';
+    document.getElementById('legend').style.display        = 'none';
+    document.getElementById('filterWrap').style.display    = 'none';
+  }
 }
 
 // ── LOAD DATA ─────────────────────────────────────────────
 async function loadData() {
+  const hotel = HOTELS[activeHotel];
+  if (!hotel || !hotel.csvUrl) return;
+
   try {
-    const res = await fetch(SHEET_CSV_URL);
+    const res = await fetch(hotel.csvUrl + '&t=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
     const parsed = parseCSV(text);
@@ -393,15 +526,11 @@ async function loadData() {
       tariff:   r.tariff,
     }));
 
-    console.log('Final rooms:', allRooms.length, allRooms.slice(0,3));
-
-    // Stats
     document.getElementById('stat-total').textContent   = allRooms.length;
     document.getElementById('stat-arjun').textContent   = allRooms.filter(r => r.occupant === 'arjun').length;
     document.getElementById('stat-sanjana').textContent = allRooms.filter(r => r.occupant === 'sanjana').length;
     document.getElementById('stat-ac').textContent      = allRooms.filter(r => r.ac).length;
 
-    // Timestamp
     const lu = document.getElementById('lastUpdated');
     lu.style.display = 'block';
     lu.textContent = 'Last synced: ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
@@ -416,7 +545,7 @@ async function loadData() {
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('errorState').style.display   = 'block';
     document.getElementById('errorDetail').textContent    = err.message;
-    console.error('Fetch error:', err);
+    console.error(err);
   }
 }
 
@@ -450,7 +579,6 @@ function render() {
   const container = document.getElementById('sections');
   container.innerHTML = '';
 
-  // Group rooms by category
   const grouped = {};
   CAT_ORDER.forEach(c => grouped[c] = []);
   allRooms.forEach(r => {
@@ -458,7 +586,6 @@ function render() {
     grouped[r.cat].push(r);
   });
 
-  // Render each category
   CAT_ORDER.forEach(cat => {
     const group = grouped[cat] || [];
     if (!group.length) return;
@@ -497,25 +624,16 @@ function render() {
   const tbody = document.getElementById('costBody');
   tbody.innerHTML = '';
   let gTotal = 0, gArjun = 0, gSanjana = 0;
-
   CAT_ORDER.forEach(cat => {
     const group = grouped[cat] || [];
     if (!group.length) return;
     const arjun   = group.filter(r => r.occupant === 'arjun').length;
     const sanjana = group.filter(r => r.occupant === 'sanjana').length;
-    const tariff  = group[0].tariff;
     gTotal += group.length; gArjun += arjun; gSanjana += sanjana;
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${cat}</td>
-      <td>${group.length}</td>
-      <td>₹${tariff.toLocaleString()}</td>
-      <td style="color:var(--arjun);font-weight:600">${arjun}</td>
-      <td style="color:var(--sanjana);font-weight:600">${sanjana}</td>
-    `;
+    tr.innerHTML = `<td>${cat}</td><td>${group.length}</td><td>₹${group[0].tariff.toLocaleString()}</td><td style="color:var(--arjun);font-weight:600">${arjun}</td><td style="color:var(--sanjana);font-weight:600">${sanjana}</td>`;
     tbody.appendChild(tr);
   });
-
   const tot = document.createElement('tr');
   tot.innerHTML = `<td>Total</td><td>${gTotal}</td><td>—</td><td style="color:var(--arjun);font-weight:700">${gArjun}</td><td style="color:var(--sanjana);font-weight:700">${gSanjana}</td>`;
   tbody.appendChild(tot);
@@ -523,11 +641,11 @@ function render() {
 
 // ── BOTTOM SHEET ──────────────────────────────────────────
 function openSheet(room) {
-  document.getElementById('s-num').textContent   = 'Room ' + room.num;
-  document.getElementById('s-title').textContent = room.type + ' · ' + room.cat;
-  document.getElementById('s-cat').textContent   = room.rawCat || room.cat;
-  document.getElementById('s-ac').textContent    = room.ac ? 'Air Conditioned ❄' : 'Non A/C';
-  document.getElementById('s-tariff').textContent= '₹' + room.tariff.toLocaleString() + ' per night';
+  document.getElementById('s-num').textContent    = 'Room ' + room.num;
+  document.getElementById('s-title').textContent  = room.type + ' · ' + room.cat;
+  document.getElementById('s-cat').textContent    = room.rawCat || room.cat;
+  document.getElementById('s-ac').textContent     = room.ac ? 'Air Conditioned ❄' : 'Non A/C';
+  document.getElementById('s-tariff').textContent = '₹' + room.tariff.toLocaleString() + ' per night';
   const whoEl = document.getElementById('s-who');
   whoEl.textContent = whoLabel(room);
   whoEl.style.color = room.occupant === 'arjun' ? 'var(--arjun)' : room.occupant === 'sanjana' ? 'var(--sanjana)' : '#666';
@@ -545,7 +663,7 @@ function closeSheet(e) {
 
 // ── INIT ──────────────────────────────────────────────────
 loadData();
-setInterval(loadData, 5 * 60 * 1000); // refresh every 5 mins
+refreshTimer = setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
 </html>

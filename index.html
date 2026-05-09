@@ -308,7 +308,12 @@ function parseCSV(text) {
     // Skip rows with no room number
     if (!roomNum) continue;
 
-    // Skip rows where room number isn't a number or known string (e.g. "Not confd")
+    // Valid room numbers are numeric (101, 108 etc) or known strings (TBD, Not confd)
+    // This filters out stray section titles like "Bride Room A/c W" leaking into data
+    const isNumeric = /^\d+$/.test(roomNum);
+    const isKnownSpecial = /^(tbd|not)/i.test(roomNum);
+    if (!isNumeric && !isKnownSpecial) continue;
+
     const tariff = parseInt(tariffRaw.replace(/[^0-9]/g, '')) || 0;
 
     rows.push({
